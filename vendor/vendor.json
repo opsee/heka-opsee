@@ -1,0 +1,136 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"path": "github.com/gogo/protobuf/gogoproto",
+			"revision": "d5d4941acc4490628827091cafee2168f8c4bc67",
+			"revisionTime": "2016-03-16T20:49:21+02:00"
+		},
+		{
+			"path": "github.com/gogo/protobuf/proto",
+			"revision": "d5d4941acc4490628827091cafee2168f8c4bc67",
+			"revisionTime": "2016-03-16T20:49:21+02:00"
+		},
+		{
+			"path": "github.com/gogo/protobuf/protoc-gen-gogo/descriptor",
+			"revision": "d5d4941acc4490628827091cafee2168f8c4bc67",
+			"revisionTime": "2016-03-16T20:49:21+02:00"
+		},
+		{
+			"path": "github.com/graphql-go/graphql",
+			"revision": "909ca9f800e7ab67307b4f9f1d56394346acb33c",
+			"revisionTime": "2016-03-18T15:58:50+08:00"
+		},
+		{
+			"path": "github.com/graphql-go/graphql/gqlerrors",
+			"revision": "909ca9f800e7ab67307b4f9f1d56394346acb33c",
+			"revisionTime": "2016-03-18T15:58:50+08:00"
+		},
+		{
+			"path": "github.com/graphql-go/graphql/language/ast",
+			"revision": "909ca9f800e7ab67307b4f9f1d56394346acb33c",
+			"revisionTime": "2016-03-18T15:58:50+08:00"
+		},
+		{
+			"path": "github.com/graphql-go/graphql/language/kinds",
+			"revision": "909ca9f800e7ab67307b4f9f1d56394346acb33c",
+			"revisionTime": "2016-03-18T15:58:50+08:00"
+		},
+		{
+			"path": "github.com/graphql-go/graphql/language/lexer",
+			"revision": "909ca9f800e7ab67307b4f9f1d56394346acb33c",
+			"revisionTime": "2016-03-18T15:58:50+08:00"
+		},
+		{
+			"path": "github.com/graphql-go/graphql/language/location",
+			"revision": "909ca9f800e7ab67307b4f9f1d56394346acb33c",
+			"revisionTime": "2016-03-18T15:58:50+08:00"
+		},
+		{
+			"path": "github.com/graphql-go/graphql/language/parser",
+			"revision": "909ca9f800e7ab67307b4f9f1d56394346acb33c",
+			"revisionTime": "2016-03-18T15:58:50+08:00"
+		},
+		{
+			"path": "github.com/graphql-go/graphql/language/printer",
+			"revision": "909ca9f800e7ab67307b4f9f1d56394346acb33c",
+			"revisionTime": "2016-03-18T15:58:50+08:00"
+		},
+		{
+			"path": "github.com/graphql-go/graphql/language/source",
+			"revision": "909ca9f800e7ab67307b4f9f1d56394346acb33c",
+			"revisionTime": "2016-03-18T15:58:50+08:00"
+		},
+		{
+			"path": "github.com/graphql-go/graphql/language/visitor",
+			"revision": "909ca9f800e7ab67307b4f9f1d56394346acb33c",
+			"revisionTime": "2016-03-18T15:58:50+08:00"
+		},
+		{
+			"path": "github.com/mozilla-services/heka/client",
+			"revision": "be1420d226808485a557ad622bb75785cadfa43a",
+			"revisionTime": "2016-03-14T15:18:36-07:00"
+		},
+		{
+			"path": "github.com/mozilla-services/heka/message",
+			"revision": "be1420d226808485a557ad622bb75785cadfa43a",
+			"revisionTime": "2016-03-14T15:18:36-07:00"
+		},
+		{
+			"path": "github.com/mozilla-services/heka/pipeline",
+			"revision": "be1420d226808485a557ad622bb75785cadfa43a",
+			"revisionTime": "2016-03-14T15:18:36-07:00"
+		},
+		{
+			"path": "github.com/opsee/basic/schema",
+			"revision": "bda735ff1865283d36f0b312dc2f9446fccdbf63",
+			"revisionTime": "2016-03-11T11:53:36-08:00"
+		},
+		{
+			"path": "github.com/opsee/basic/schema/aws/autoscaling",
+			"revision": "79f175a0f09b60105ae12cc3a2e87f5f7a54ce34",
+			"revisionTime": "2016-03-21T16:58:40-07:00"
+		},
+		{
+			"path": "github.com/opsee/basic/schema/aws/ec2",
+			"revision": "79f175a0f09b60105ae12cc3a2e87f5f7a54ce34",
+			"revisionTime": "2016-03-21T16:58:40-07:00"
+		},
+		{
+			"path": "github.com/opsee/basic/schema/aws/elb",
+			"revision": "79f175a0f09b60105ae12cc3a2e87f5f7a54ce34",
+			"revisionTime": "2016-03-21T16:58:40-07:00"
+		},
+		{
+			"path": "github.com/opsee/basic/schema/aws/rds",
+			"revision": "79f175a0f09b60105ae12cc3a2e87f5f7a54ce34",
+			"revisionTime": "2016-03-21T16:58:40-07:00"
+		},
+		{
+			"path": "github.com/opsee/protobuf/opseeproto",
+			"revision": "1776823a8fe8856c8e3a75c9d4f846c9008c6935",
+			"revisionTime": "2016-02-26T14:29:09-08:00"
+		},
+		{
+			"path": "github.com/opsee/protobuf/opseeproto/types",
+			"revision": "1776823a8fe8856c8e3a75c9d4f846c9008c6935",
+			"revisionTime": "2016-02-26T14:29:09-08:00"
+		},
+		{
+			"path": "github.com/opsee/protobuf/plugin/graphql/scalars",
+			"revision": "1776823a8fe8856c8e3a75c9d4f846c9008c6935",
+			"revisionTime": "2016-02-26T14:29:09-08:00"
+		},
+		{
+			"path": "github.com/satori/go.uuid",
+			"revision": "e673fdd4dea8a7334adbbe7f57b7e4b00bdc5502",
+			"revisionTime": "2016-02-18T23:57:46Z"
+		},
+		{
+			"path": "golang.org/x/net/context",
+			"revision": "35b06af0720201bc2f326773a80767387544f8c4",
+			"revisionTime": "2016-03-15T14:00:09+11:00"
+		}
+	]
+}
