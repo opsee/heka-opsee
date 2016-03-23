@@ -78,26 +78,6 @@
 			"revisionTime": "2016-03-18T15:58:50+08:00"
 		},
 		{
-			"path": "github.com/mozilla-services/heka/client",
-			"revision": "be1420d226808485a557ad622bb75785cadfa43a",
-			"revisionTime": "2016-03-14T15:18:36-07:00"
-		},
-		{
-			"path": "github.com/mozilla-services/heka/message",
-			"revision": "be1420d226808485a557ad622bb75785cadfa43a",
-			"revisionTime": "2016-03-14T15:18:36-07:00"
-		},
-		{
-			"path": "github.com/mozilla-services/heka/pipeline",
-			"revision": "be1420d226808485a557ad622bb75785cadfa43a",
-			"revisionTime": "2016-03-14T15:18:36-07:00"
-		},
-		{
-			"path": "github.com/mozilla-services/heka/plugins/tcp",
-			"revision": "be1420d226808485a557ad622bb75785cadfa43a",
-			"revisionTime": "2016-03-14T15:18:36-07:00"
-		},
-		{
 			"path": "github.com/opsee/basic/schema",
 			"revision": "bda735ff1865283d36f0b312dc2f9446fccdbf63",
 			"revisionTime": "2016-03-11T11:53:36-08:00"
