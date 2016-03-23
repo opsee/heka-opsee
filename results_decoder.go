@@ -1,4 +1,4 @@
-package results
+package heka_opsee
 
 import (
 	"errors"

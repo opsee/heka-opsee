@@ -1,4 +1,4 @@
-package nsq
+package heka_opsee
 
 // Heka input plugin and nsq consumer
 //
