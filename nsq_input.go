@@ -33,10 +33,6 @@ type NsqConsumer struct {
 	*nsq.Consumer
 }
 
-func (p *NsqProducer) SetLogger(l Logger, lvl nsq.LogLevel) {
-	p.Producer.SetLogger(l, lvl)
-}
-
 func NewConsumer(topic string, channel string, config *nsq.Config) (Consumer, error) {
 	consumer, err := nsq.NewConsumer(topic, channel, config)
 	if err != nil {
