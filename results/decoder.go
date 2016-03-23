@@ -1,4 +1,4 @@
-package opsee
+package results
 
 import (
 	"errors"
