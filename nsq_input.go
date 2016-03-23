@@ -322,7 +322,7 @@ func (input *NsqInput) HandleMessage(msg *nsq.Message) error {
 	if *input.UseMsgBytes {
 		pack.MsgBytes = msg.Body
 	} else {
-		pack.Message.SetUuid(uuid.NewV4())
+		pack.Message.SetUuid(uuid.NewV4().Bytes())
 		pack.Message.SetTimestamp(time.Now().UnixNano())
 		pack.Message.SetType("nsq.input")
 		pack.Message.SetHostname(input.pConfig.Hostname())
