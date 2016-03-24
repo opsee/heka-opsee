@@ -55,7 +55,6 @@ type NsqInputConfig struct {
 	Topic        string   `toml:"topic"`
 	Channel      string   `toml:"channel"`
 	DecoderName  string   `toml:"decoder"`
-	UseMsgBytes  *bool    `toml:"use_msgbytes"`
 
 	// Set to true if the TCP connection should be tunneled through TLS.
 	// Requires additional Tls config section.
@@ -244,36 +243,6 @@ func (input *NsqInput) Init(config interface{}) (err error) {
 	input.consumer, err = input.newConsumer(input.Topic, input.Channel, input.config)
 	input.consumer.SetLogger(nil, nsq.LogLevelError)
 
-	var (
-		useMsgBytes bool
-		ok          bool
-		decoder     pipeline.Decoder
-	)
-
-	if input.UseMsgBytes == nil {
-		// Only override if not already set
-		if conf.DecoderName != "" {
-			decoder, ok = input.pConfig.Decoder(conf.DecoderName)
-		}
-		if ok && decoder != nil {
-			// We want to know what kind of decoder is being used, but we only
-			// care if they're using a protobuf decoder, or a multidecoder with
-			// a protobuf decoder as the first sub decoder
-			switch decoder.(type) {
-			case *pipeline.ProtobufDecoder:
-				useMsgBytes = true
-			case *pipeline.MultiDecoder:
-				d := decoder.(*pipeline.MultiDecoder)
-				if len(d.Decoders) > 0 {
-					if _, ok := d.Decoders[0].(*pipeline.ProtobufDecoder); ok {
-						useMsgBytes = true
-					}
-				}
-			}
-		}
-		input.UseMsgBytes = &useMsgBytes
-	}
-
 	return nil
 }
 
@@ -317,19 +286,15 @@ func (input *NsqInput) Stop() {
 
 func (input *NsqInput) HandleMessage(msg *nsq.Message) error {
 	pack := <-input.packSupply
-	// If we're using protobuf, then the entire message is in the
-	// message body
-	if *input.UseMsgBytes {
-		pack.MsgBytes = msg.Body
-	} else {
-		pack.Message.SetUuid(uuid.NewV4().Bytes())
-		pack.Message.SetTimestamp(time.Now().UnixNano())
-		pack.Message.SetType("nsq.input")
-		pack.Message.SetHostname(input.pConfig.Hostname())
-		pack.Message.SetPayload(string(msg.Body))
-		message.NewStringField(pack.Message, "topic", input.Topic)
-		message.NewStringField(pack.Message, "channel", input.Channel)
-	}
+
+	pack.Message.SetUuid(uuid.NewV4().Bytes())
+	pack.Message.SetTimestamp(time.Now().UnixNano())
+	pack.Message.SetType("nsq.input")
+	pack.Message.SetHostname(input.pConfig.Hostname())
+	pack.Message.SetPayload(string(msg.Body))
+	message.NewStringField(pack.Message, "topic", input.Topic)
+	message.NewStringField(pack.Message, "channel", input.Channel)
+
 	input.sendPack(pack)
 	return nil
 }
