@@ -1,3 +1,0 @@
-[submodule "heka"]
-	path = heka
-	url = git@github.com:mozilla-services/heka.git
