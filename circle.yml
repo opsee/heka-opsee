@@ -1,0 +1,14 @@
+machine:
+  services:
+    - docker
+  environment:
+    ci: "true"
+dependencies:
+  cache_directories: []
+  override:
+    - docker info
+    - docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD quay.io
+    - go version
+test:
+  override:
+    - bash build-heka.sh
