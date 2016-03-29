@@ -17,10 +17,12 @@ cp heka-config/config.toml heka/examples/conf/hekad.toml || exit $?
 cp heka-config/env.sh heka/ || exit $?
 cp heka-config/dockerignore heka/.dockerignore || exit $?
 cp heka-config/Dockerfile heka/ || exit $?
-cp heka-config/build_docker.sh heka/docker/ || exit $?
 
 pushd heka/docker
-./build_docker.sh || exit $?
+./build_docker.sh
 popd
 
-
+st=$(docker ps -f "name=hek" --format="{{.Status}}")
+if [ -z "$st" ]; then
+    exit 1
+fi
