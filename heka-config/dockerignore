@@ -1,0 +1,8 @@
+.vagrant
+docs/build
+build
+etc/
+pipeline/mock_*.go
+var/
+*.sw?
+dockerfile/*

@@ -1,0 +1,42 @@
+[hekad]
+maxprocs = 2
+
+[NsqInput]
+lookupd_http_addresses = [ "http://nsqlookupd-1.in.opsee.com:4161" ]
+topic = "_.connected"
+channel = "mike-heka-dev#ephemeral"
+decoder = "JsonDecoder"
+
+[JsonDecoder]
+type = "SandboxDecoder"
+filename = "lua_decoders/json.lua"
+    [JsonDecoder.config]
+    type = "demo"
+    payload_keep = true
+    map_fields = false
+
+[demo_counter]
+type = "SandboxFilter"
+message_matcher = "Type == 'demo'"
+ticker_interval = 15
+filename = "lua_filters/heartbeat_filter.lua"
+preserve_data = true
+
+[cbuf_librato_encoder]
+type = "SandboxEncoder"
+filename = "lua_encoders/cbuf_librato.lua"
+preserve_data = true
+
+[librato]
+type = "HttpOutput"
+message_matcher = "Type == 'heka.sandbox-output' && Fields[payload_type] == 'cbuf'"
+encoder = "cbuf_librato_encoder"
+address = "https://metrics-api.librato.com/v1/metrics"
+username = "mborsuk@gmail.com"
+password = "561993474fabfa00ee3f82420747f1d2e4ff8c69aa196b8626e4e87529d29edc"
+    [librato.headers]
+    Content-Type = ["application/json"]
+
+[DashboardOutput]
+ticker_interval = 30
+
