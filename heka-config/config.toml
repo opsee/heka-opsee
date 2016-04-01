@@ -6,6 +6,7 @@ lookupd_http_addresses = [ "http://nsqlookupd-1.in.opsee.com:4161" ]
 topic = "_.connected"
 channel = "mike-heka-dev#ephemeral"
 decoder = "JsonDecoder"
+max_in_flight = 4
 
 [JsonDecoder]
 type = "SandboxDecoder"
