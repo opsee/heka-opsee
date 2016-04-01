@@ -241,7 +241,7 @@ func (input *NsqInput) Init(config interface{}) (err error) {
 		input.newConsumer = NewConsumer
 	}
 	input.consumer, err = input.newConsumer(input.Topic, input.Channel, input.config)
-	input.consumer.SetLogger(nil, nsq.LogLevelError)
+	input.consumer.SetLogger(nil, nsq.LogLevelDebug)
 
 	return nil
 }
