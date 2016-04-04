@@ -1,24 +1,24 @@
 [hekad]
 maxprocs = 2
 
-[NsqInput]
-lookupd_http_addresses = [ "http://nsqlookupd-1.in.opsee.com:4161" ]
-topic = "_.connected"
-channel = "mike-heka-dev#ephemeral"
-decoder = "JsonDecoder"
+[NsqHeartbeatInput]
+lookupd_http_addresses = [ "http://nsqlookupd-1.in.opsee.com:4161", "http://nsqlookupd-2.in.opsee.com:4161" ]
+topic = "_.heartbeat"
+channel = "heka-opsee"
+decoder = "JsonHeartbeatDecoder"
 max_in_flight = 4
 
-[JsonDecoder]
+[JsonHeartbeatDecoder]
 type = "SandboxDecoder"
 filename = "lua_decoders/json.lua"
-    [JsonDecoder.config]
-    type = "demo"
+    [JsonHeartbeatDecoder.config]
+    type = "heartbeat"
     payload_keep = true
     map_fields = false
 
-[demo_counter]
+[HeartbeatFilter]
 type = "SandboxFilter"
-message_matcher = "Type == 'demo'"
+message_matcher = "Type == 'heartbeat'"
 ticker_interval = 15
 filename = "lua_filters/heartbeat_filter.lua"
 preserve_data = true
