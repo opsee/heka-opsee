@@ -39,5 +39,8 @@ password = "561993474fabfa00ee3f82420747f1d2e4ff8c69aa196b8626e4e87529d29edc"
     Content-Type = ["application/json"]
 
 [DashboardOutput]
-ticker_interval = 30
+ticker_interval = 15
 
+[Logger]
+type = "LogOutput"
+message_matcher = "Fields[payload_type] == 'txt' && Fields[payload_name] == 'opsee_log'"
