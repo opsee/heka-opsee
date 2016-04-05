@@ -57,7 +57,9 @@ function process_message ()
 
 	local errors = 0
 	for k,v in pairs(metrics) do
-		if k == metrics_type_map_field then goto continue end
+		if k == metrics_type_map_field then
+            goto continue
+        end
 
 		if type(v) ~= "number" then
 			errors = errors+1
@@ -73,7 +75,9 @@ function process_message ()
 		end
 
 		-- only support gauge types currently in librato encoder
-		if m_type ~= "gauge" and m_type ~= "gaugeFloat64" then goto continue end
+		if m_type ~= "gauge" and m_type ~= "gaugeFloat64" then
+            goto continue
+        end
 
 		values_buf:add(ts, 1, cust_id)
 		values_buf:add(ts, 2, bast_id)
@@ -87,6 +91,8 @@ function process_message ()
 		inject_payload("txt", "opsee_log", string.format("errors processing metrics for %s", cust_id))
 		return -1
 	end
+
+    inject_payload("txt", "opsee_log", "TEST")
 
     return 0
 end
