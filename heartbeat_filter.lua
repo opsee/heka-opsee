@@ -11,88 +11,74 @@ cust_id_field = "customer_id"
 bast_id_field = "bastion_id"
 metrics_type_map_field = "metricTypes"
 
-values_buf = circular_buffer.new(1440, 4, 15)
-values_buf:set_header(1, "customer_id")
-values_buf:set_header(2, "bastion_id")
-values_buf:set_header(3, "process_name")
-values_buf:set_header(4, "value")
+max_num_metrics = 20
+
+values_buf = circular_buffer.new(1440, max_num_metrics, 15)
 
 function process_message ()
 	local ts = read_message("Fields["..timestamp_field.."]")
 
     if type(ts) ~= "number" then
-		inject_payload("txt", "opsee_log", string.format("error: bad timestamp received %s", ts))
-		return -1
+		return -1, string.format("error: bad timestamp received %s", ts)
 	end
 
 	local proc_name = read_message("Fields["..process_field.."]")
 	if proc_name == nil then
-		inject_payload("txt", "opsee_log", string.format("error: empty process name"))
-		return -1
+		return -1, string.format("error: empty process name")
 	end
 
 	local cust_id = read_message("Fields["..cust_id_field.."]")
 	if cust_id == nil then
-		inject_payload("txt", "opsee_log", string.format("error: empty cust id"))
-		return -1
+		return -1, string.format("error: empty cust id")
 	end
 
 	local bast_id = read_message("Fields["..bast_id_field.."]")
 	if bast_id == nil then
-		inject_payload("txt", "opsee_log", string.format("error: empty bast id for %s", cust_id))
-		return -1
+		return -1, string.format("error: empty bast id for %s", cust_id)
 	end
 
 	local metrics = read_message("Fields["..metrics_field.."]")
 	if metrics == nil then
-		inject_payload("txt", "opsee_log", string.format("error: empty metrics for %s", cust_id))
-		return -1
+		return -1, string.format("error: empty metrics for %s", cust_id)
 	end
 
 	local metrics_types = metrics[metrics_type_map_field]
 	if type(metrics_types) ~= "table" then
-		inject_payload("txt", "opsee_log", string.format("error: empty metrics types for %s", cust_id))
-		return -1
+		return -1, string.format("error: empty metrics types for %s", cust_id)
 	end
 
 	local errors = 0
+    local metric_col = 0
 	for k,v in pairs(metrics) do
+        local continue_loop = false
+
 		if k == metrics_type_map_field then
-            goto continue
+            continue_loop = true
+		elseif type(v) ~= "number" then
+			errors = errors+1
+            continue_loop = true
+		elseif metrics_types[k] == nil then
+			errors = errors+1
+            continue_loop = true
+		elseif metrics_types[k] ~= "gauge" and metrics_types[k] ~= "gaugeFloat64" then
+            -- only support gauge types currently in librato encoder
+            continue_loop = true
         end
 
-		if type(v) ~= "number" then
-			errors = errors+1
-			add_to_payload(string.format("error: non-numeric metric received, %s", v))
-			goto continue
-		end
+        if not continue_loop then
+            values_buf:set_header(metric_col, cust_id.."_"..proc_name.."_"..k)
+            values_buf:add(ts, metric_col, v)
 
-		m_type = metrics_types[k]
-		if m_type == nil then
-			errors = errors+1
-			add_to_payload(string.format("error: no type found for metric %s", k))
-			goto continue
-		end
-
-		-- only support gauge types currently in librato encoder
-		if m_type ~= "gauge" and m_type ~= "gaugeFloat64" then
-            goto continue
+            if metric_col == max_num_metrics then
+                break
+            end
+            metric_col = metric_col+1
         end
-
-		values_buf:add(ts, 1, cust_id)
-		values_buf:add(ts, 2, bast_id)
-		values_buf:add(ts, 3, proc_name)
-		values_buf:add(ts, 4, v)
-
-		::continue::
 	end
 
 	if errors > 0 then
-		inject_payload("txt", "opsee_log", string.format("errors processing metrics for %s", cust_id))
-		return -1
+		return -1, string.format("error: %d errors processing metrics for %s", errors, cust_id)
 	end
-
-    inject_payload("txt", "opsee_log", "TEST")
 
     return 0
 end
