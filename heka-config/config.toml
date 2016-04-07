@@ -16,15 +16,10 @@ preserve_data = false
 can_exit = false
 output_limit = 32768
 
-#   [librato]
-#   type = "HttpOutput"
-#   message_matcher = "Type == 'heka.sandbox-output' && Fields[payload_type] == 'cbuf'"
-#   encoder = "cbuf_librato_encoder"
-#   address = "https://metrics-api.librato.com/v1/metrics"
-#   username = "greg@opsee.com"
-#   password = "f5aba57d1cf6cdf9b2583fab0e55d7ae596cce771acd74dc4c31ff0664b510b4"
-#       [librato.headers]
-#       Content-Type = ["application/json"]
+[librato_encoder]
+type = "SandboxEncoder"
+filename = "lua_encoders/librato_encoder.lua"
+preserve_data = false
 
 [debug_output]
 type = "LogOutput"
@@ -35,3 +30,16 @@ encoder = "RstEncoder"
 
 [DashboardOutput]
 ticker_interval = 15
+
+[librato]
+type = "HttpOutput"
+method = "POST"
+message_matcher = "Type == 'heka.sandbox.heartbeat'"
+encoder = "librato_encoder"
+address = "https://metrics-api.librato.com/v1/metrics"
+#address = "http://requestb.in/wktjvawk"
+username = "greg@opsee.com"
+password = "f5aba57d1cf6cdf9b2583fab0e55d7ae596cce771acd74dc4c31ff0664b510b4"
+    [librato.headers]
+    Content-Type = ["application/json"]
+

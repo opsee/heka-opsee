@@ -11,6 +11,7 @@ mkdir -p heka/externals/heka-opsee || exit $?
 cp -a nsq_input.go vendor heka/externals/heka-opsee || exit $?
 
 cp heartbeat_filter.lua heka/sandbox/lua/filters/ || exit $?
+cp librato_encoder.lua heka/sandbox/lua/encoders/ || exit $?
 
 cp heka-config/plugin_loader.cmake heka/cmake/ || exit $?
 cp heka-config/config.toml heka/examples/conf/hekad.toml || exit $?
