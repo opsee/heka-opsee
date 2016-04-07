@@ -37,7 +37,6 @@ method = "POST"
 message_matcher = "Type == 'heka.sandbox.heartbeat'"
 encoder = "librato_encoder"
 address = "https://metrics-api.librato.com/v1/metrics"
-#address = "http://requestb.in/wktjvawk"
 username = "greg@opsee.com"
 password = "f5aba57d1cf6cdf9b2583fab0e55d7ae596cce771acd74dc4c31ff0664b510b4"
     [librato.headers]
