@@ -10,7 +10,7 @@ max_in_flight = 4
 [HeartbeatFilter]
 type = "SandboxFilter"
 message_matcher = "Type == 'nsq.input'"
-ticker_interval = 0
+ticker_interval = 15
 filename = "lua_filters/heartbeat_filter.lua"
 preserve_data = false
 can_exit = false
@@ -20,13 +20,6 @@ output_limit = 32768
 type = "SandboxEncoder"
 filename = "lua_encoders/librato_encoder.lua"
 preserve_data = false
-
-[debug_output]
-type = "LogOutput"
-message_matcher = "Type == 'heka.sandbox.heartbeat'"
-encoder = "RstEncoder"
-
-[RstEncoder]
 
 [DashboardOutput]
 ticker_interval = 15
