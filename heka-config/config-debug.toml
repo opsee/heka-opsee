@@ -1,0 +1,46 @@
+[hekad]
+maxprocs = 2
+
+[NsqInput]
+lookupd_http_addresses = [ "http://nsqlookupd-1.in.opsee.com:4161", "http://nsqlookupd-2.in.opsee.com:4161" ]
+topic = "_.heartbeat"
+channel = "heka-opsee-dev"
+max_in_flight = 4
+
+[HeartbeatFilter]
+type = "SandboxFilter"
+message_matcher = "Type == 'nsq.input'"
+ticker_interval = 15
+filename = "lua_filters/heartbeat_filter.lua"
+preserve_data = false
+can_exit = false
+output_limit = 32768
+
+[librato_encoder]
+type = "SandboxEncoder"
+filename = "lua_encoders/librato_encoder.lua"
+preserve_data = false
+
+[debug_output]
+type = "LogOutput"
+#message_matcher = "Type == 'heka.sandbox.heartbeat'"
+#message_matcher = "TRUE"
+message_matcher = 'Fields[debug_msg_cnt] != NIL'
+encoder = "RstEncoder"
+
+[RstEncoder]
+
+[DashboardOutput]
+ticker_interval = 15
+
+[librato]
+type = "HttpOutput"
+method = "POST"
+message_matcher = "Type == 'heka.sandbox.heartbeat'"
+encoder = "librato_encoder"
+address = "https://metrics-api.librato.com/v1/metrics"
+#address = "https://vajtaxpyfiwx.runscope.net"
+username = "mborsuk@gmail.com"
+password = "561993474fabfa00ee3f82420747f1d2e4ff8c69aa196b8626e4e87529d29edc"
+    [librato.headers]
+    Content-Type = ["application/json"]

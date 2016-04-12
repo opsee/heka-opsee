@@ -42,7 +42,7 @@ metric_names = {
 }
 
 local metric_sets_buffer = {}
-local max_buffer_len = 25
+local max_buffer_len = 10
 
 function process_message ()
 	local msg = read_message("Payload")
