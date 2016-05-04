@@ -12,6 +12,7 @@ dependencies:
 test:
   override:
     - bash build-heka.sh
+    - docker tag mozilla/heka quay.io/opsee/heka-opsee:$CIRCLE_SHA1
     - docker push quay.io/opsee/heka-opsee:$CIRCLE_SHA1
 deployment:
   production:
