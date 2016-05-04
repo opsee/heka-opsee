@@ -23,6 +23,6 @@ cp heka-config/Dockerfile.final heka/docker/ || exit $?
 pushd heka/docker
 ./build_docker.sh
 
-exit "$?"
-
 popd
+
+exit 0
