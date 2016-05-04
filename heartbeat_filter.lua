@@ -10,35 +10,45 @@ metrics_field = "metrics"
 metrics_type_map_field = "metricTypes"
 
 metric_names = {
-    ["runtime.MemStats.TotalAlloc"]		= 1,
-    ["runtime.MemStats.Alloc"]			= 2,
-    ["runtime.MemStats.HeapAlloc"]		= 3,
-    ["runtime.MemStats.HeapInuse"]		= 4,
-	["runtime.MemStats.Mallocs"]		= 5,
-    ["runtime.MemStats.NumGC"]			= 6,
-    ["runtime.MemStats.StackSys"]		= 7,
-    ["runtime.MemStats.Sys"] 			= 8,
-    ["runtime.MemStats.NumThread"] 		= 9,
-    ["runtime.MemStats.NumGoroutine"] 	= 10,
-    ["runtime.MemStats.PauseTotalNs"] 	= 11,
-    ["runtime.MemStats.BuckHashSys"] 	= 12,
-    ["runtime.MemStats.DebugGC"] 		= 13,
-    ["runtime.MemStats.EnableGC"] 		= 14,
-    ["runtime.MemStats.Frees"] 			= 15,
-    ["runtime.MemStats.GCCPUFraction"]  = 16,
-    ["runtime.MemStats.HeapIdle"] 		= 17,
-    ["runtime.MemStats.HeapObjects"] 	= 18,
-    ["runtime.MemStats.HeapReleased"] 	= 19,
-    ["runtime.MemStats.HeapSys"] 		= 20,
-    ["runtime.MemStats.LastGC"] 		= 21,
-    ["runtime.MemStats.Lookups"] 		= 22,
-    ["runtime.MemStats.MCacheInuse"] 	= 23,
-    ["runtime.MemStats.MCacheSys"] 		= 24,
-    ["runtime.MemStats.MSpanSys"] 		= 25,
-    ["runtime.MemStats.NextGC"] 		= 26,
-    ["runtime.MemStats.StackInuse"] 	= 27,
-    ["runtime.MemStats.Sys"] 			= 28,
-    ["runtime.MemStats.NumCgoCall"] 	= 29,
+    ["runtime.MemStats.HeapInuse"]		= true,
+    ["runtime.MemStats.HeapObjects"] 	= true,
+    ["runtime.MemStats.NumGC"]			= true,
+    ["runtime.MemStats.Alloc"]			= true,
+    ["runtime.MemStats.TotalAlloc"]		= false,
+    ["runtime.MemStats.HeapAlloc"]		= false,
+	["runtime.MemStats.Mallocs"]		= false,
+    ["runtime.MemStats.StackSys"]		= false,
+    ["runtime.MemStats.Sys"] 			= false,
+    ["runtime.MemStats.NumThread"] 		= false,
+    ["runtime.MemStats.NumGoroutine"] 	= false,
+    ["runtime.MemStats.PauseTotalNs"] 	= false,
+    ["runtime.MemStats.BuckHashSys"] 	= false,
+    ["runtime.MemStats.DebugGC"] 		= false,
+    ["runtime.MemStats.EnableGC"] 		= false,
+    ["runtime.MemStats.Frees"] 			= false,
+    ["runtime.MemStats.GCCPUFraction"]  = false,
+    ["runtime.MemStats.HeapIdle"] 		= false,
+    ["runtime.MemStats.HeapReleased"] 	= false,
+    ["runtime.MemStats.HeapSys"] 		= false,
+    ["runtime.MemStats.LastGC"] 		= false,
+    ["runtime.MemStats.Lookups"] 		= false,
+    ["runtime.MemStats.MCacheInuse"] 	= false,
+    ["runtime.MemStats.MCacheSys"] 		= false,
+    ["runtime.MemStats.MSpanSys"] 		= false,
+    ["runtime.MemStats.NextGC"] 		= false,
+    ["runtime.MemStats.StackInuse"] 	= false,
+    ["runtime.MemStats.Sys"] 			= false,
+    ["runtime.MemStats.NumCgoCall"] 	= false,
+}
+
+proc_names = {
+    ["runner"] = true,
+    ["checker"] = true,
+    ["test_runner"] = true,
+    ["monitor"] = true,
+    ["discovery"] = false,
+    ["hacker"] = false,
+    ["aws_command"] = false,
 }
 
 local metric_sets_buffer = {}
@@ -61,7 +71,10 @@ function process_message ()
 	local proc_name = json[process_field]
 	if proc_name == nil then
 		return -1, string.format("empty process name")
-	end
+	elseif not proc_names[proc_name] then
+        --- skip procs not explicitly listed or set to false
+        return 0
+    end
 
 	local cust_id = json[cust_id_field]
 	if cust_id == nil then
@@ -99,8 +112,8 @@ function process_message ()
 		elseif metrics_types[k] ~= "gauge" and metrics_types[k] ~= "gaugeFloat64" then
             -- only support gauge types currently in librato encoder
             continue_loop = true
-        elseif metric_names[k] == nil then
-            --- skip metrics not explicitly listed
+        elseif not metric_names[k] then
+            --- skip metrics not explicitly listed or set to false
             continue_loop = true
         end
 

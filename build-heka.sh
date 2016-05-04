@@ -22,9 +22,7 @@ cp heka-config/Dockerfile.final heka/docker/ || exit $?
 
 pushd heka/docker
 ./build_docker.sh
-popd
 
-st=$(docker ps -f "name=hek" --format="{{.Status}}")
-if [ -z "$st" ]; then
-    exit 1
-fi
+exit "$?"
+
+popd
