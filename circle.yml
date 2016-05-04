@@ -7,6 +7,16 @@ dependencies:
   cache_directories: []
   override:
     - go version
+    - docker info
+    - docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD quay.io
 test:
   override:
     - bash build-heka.sh
+    - docker push quay.io/opsee/heka-opsee:$CIRCLE_SHA1
+deployment:
+  production:
+    branch: master
+    owner: opsee
+    commands:
+      - docker tag -f quay.io/opsee/heka-opsee:$CIRCLE_SHA1 quay.io/opsee/heka-opsee:latest
+      - docker push quay.io/opsee/heka-opsee:latest
